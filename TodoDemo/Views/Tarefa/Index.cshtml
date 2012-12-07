@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TodoDemo.Models.Tarefa>
+
+@{
+    ViewBag.Title = "Lista de tarefas";
+}
+
+<h2>Lista de tarefas</h2>
+
+@using (Html.BeginForm("Create", "Tarefa", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Adicionar tarefa</legend>
+
+        <p>@Html.Label("Nome"): @Html.TextBox("Nome") <input type="submit" value="Adicionar tarefa"></p>
+
+    </fieldset>
+}
+
+<ul id="tarefas">
+
+    
+
+</ul>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tarefas").load("/Tarefa/ListaTarefas");
+        });
+        var opcoes = {
+            success: function (resultado) {
+                $("#tarefas").append("<li>" + resultado.Nome +
+                    " - <a href='/Tarefa/Delete/" +
+                    resultado.IdTarefa + "'>Remover</a></li>");
+                toastr.success("Tarefa adicionada com sucesso");
+            },
+            resetForm: true
+        };
+        $("form").ajaxForm(opcoes);
+
+        $("#tarefas").on('click', 'a', function (event) {
+            event.preventDefault();
+            var linha = $(this).closest("li");
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'POST',
+                success: function (resultado) {
+                    $(linha).fadeOut('slow');
+                    toastr.success('Tarefa excluída com sucesso');
+                }
+            });
+        });
+
+        $("#tarefas").bind('ajaxSend', function () {
+            $(this).mask("Carregando...");
+        }).bind('ajaxComplete', function () {
+            $(this).unmask();
+        });
+    </script>    
+}

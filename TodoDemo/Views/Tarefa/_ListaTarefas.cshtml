@@ -1,0 +1,5 @@
+﻿@model IEnumerable<TodoDemo.Models.Tarefa>
+
+@foreach (var item in Model) {
+    <li>@Html.DisplayFor(modelItem => item.Nome) - @Html.ActionLink("Remover", "Delete", new { id = item.IdTarefa }) </li>
+}

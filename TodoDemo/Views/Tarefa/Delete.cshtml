@@ -1,0 +1,22 @@
+﻿@model TodoDemo.Models.Tarefa
+
+@{
+    ViewBag.Title = "Remover tarefa";
+}
+
+<h2>Remover tarefa</h2>
+
+<fieldset>
+    <legend>Tarefa</legend>
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nome)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Remover" /> |
+        @Html.ActionLink("Voltar", "Index")
+    </p>
+}
